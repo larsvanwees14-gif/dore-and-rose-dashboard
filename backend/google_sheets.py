@@ -42,12 +42,31 @@ class DoreAndRoseSheets:
         self.config = config["google_sheets"]
         self.cache_ttl = config.get("cache", {}).get("ttl_minutes", 5)
 
-        # Credentials: env var (Railway) or file (local dev)
+        # Credentials: single JSON env var, individual env vars, or file (local dev)
         creds_json = os.environ.get("GOOGLE_CREDENTIALS_JSON")
         if creds_json:
+            # Option 1: full credentials JSON provided as a single env var
             info = json.loads(creds_json)
             creds = service_account.Credentials.from_service_account_info(info, scopes=SCOPES)
+        elif os.environ.get("type") or os.environ.get("client_email"):
+            # Option 2: credentials split into individual env vars (e.g. Railway per-variable setup)
+            individual_keys = [
+                "type", "project_id", "private_key_id", "private_key",
+                "client_email", "client_id", "auth_uri", "token_uri",
+                "auth_provider_x509_cert_url", "client_x509_cert_url",
+                "universe_domain",
+            ]
+            missing = [k for k in individual_keys if not os.environ.get(k)]
+            if missing:
+                raise ValueError(
+                    f"Missing required Google credential environment variables: {', '.join(missing)}"
+                )
+            info = {k: os.environ[k] for k in individual_keys}
+            # Restore escaped newlines in the private key (Railway stores them literally)
+            info["private_key"] = info["private_key"].replace("\\n", "\n")
+            creds = service_account.Credentials.from_service_account_info(info, scopes=SCOPES)
         else:
+            # Option 3: fall back to a local credentials file (local dev)
             creds_file = os.path.expanduser(self.config["credentials_file"])
             creds = service_account.Credentials.from_service_account_file(creds_file, scopes=SCOPES)
 
