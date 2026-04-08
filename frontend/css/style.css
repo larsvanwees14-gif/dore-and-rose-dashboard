@@ -1,0 +1,522 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary: #000000;
+    --blue: #2563EB;
+    --green: #16A34A;
+    --red: #C25B56;
+    --bg: #FFFFFF;
+    --bg-card: #FFFFFF;
+    --bg-page: #F5F5F3;
+    --text: #1A1A1A;
+    --text-secondary: #6B6B6B;
+    --border: #E8E8E8;
+    --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+    --shadow-hover: 0 4px 12px rgba(0,0,0,0.08);
+    --radius: 12px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-page);
+    color: var(--text);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Header */
+.header {
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.logo {
+    height: 40px;
+    border-radius: 8px;
+}
+
+.header h1 {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.refresh-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    font-family: inherit;
+}
+
+.refresh-btn:hover { opacity: 0.8; }
+
+.month-label {
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* Main Layout */
+.main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px 32px;
+}
+
+/* KPI Cards */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.kpi-card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.2s;
+}
+
+.kpi-card:hover { box-shadow: var(--shadow-hover); }
+
+.kpi-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.kpi-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1.2;
+}
+
+.kpi-change {
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 4px;
+}
+
+.kpi-change.positive { color: var(--green); }
+.kpi-change.negative { color: var(--red); }
+
+.kpi-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.kpi-label-row .kpi-label {
+    margin-bottom: 0;
+}
+
+.btw-switch {
+    display: flex;
+    position: relative;
+    background: var(--bg-page);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.btw-option {
+    position: relative;
+    z-index: 1;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: color 0.25s;
+    white-space: nowrap;
+    user-select: none;
+}
+
+.btw-option.active {
+    color: white;
+}
+
+.btw-slider {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    height: calc(100% - 4px);
+    width: calc(50% - 2px);
+    background: var(--primary);
+    border-radius: 4px;
+    transition: transform 0.25s ease;
+}
+
+.btw-switch.inc .btw-slider {
+    transform: translateX(100%);
+}
+
+/* Filter Section */
+.filter-section {
+    margin-bottom: 24px;
+}
+
+.filter-row {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.filter-presets {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    color: var(--text);
+}
+
+.filter-btn:hover {
+    border-color: var(--primary);
+}
+
+.filter-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.custom-range {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.range-select {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: inherit;
+    background: var(--bg-card);
+    color: var(--text);
+    cursor: pointer;
+    min-width: 140px;
+}
+
+.range-select:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.range-separator {
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.apply-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    font-family: inherit;
+}
+
+.apply-btn:hover { opacity: 0.8; }
+
+/* Chart Card */
+.chart-card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-bottom: 24px;
+}
+
+.chart-card h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--text);
+}
+
+.chart-container {
+    position: relative;
+    height: 340px;
+}
+
+/* Target Tracking */
+.target-section {
+    margin-top: 16px;
+}
+
+.section-heading {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--text);
+}
+
+.target-filter {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.target-q-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    color: var(--text);
+}
+
+.target-q-btn:hover { border-color: var(--primary); }
+
+.target-q-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.target-progress-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.progress-card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    box-shadow: var(--shadow);
+}
+
+.progress-card.total {
+    border: 2px solid var(--primary);
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.progress-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.progress-pct {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.progress-pct.on-track { color: var(--green); }
+.progress-pct.behind { color: var(--red); }
+
+.progress-bar-bg {
+    position: relative;
+    height: 8px;
+    background: var(--bg-page);
+    border-radius: 4px;
+    overflow: visible;
+    margin-bottom: 10px;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.6s ease;
+}
+
+.progress-bar-fill.on-track { background: var(--green); }
+.progress-bar-fill.behind { background: var(--red); }
+
+.progress-bar-expected {
+    position: absolute;
+    top: -3px;
+    width: 2px;
+    height: 14px;
+    background: var(--text-secondary);
+    border-radius: 1px;
+    opacity: 0.5;
+}
+
+.progress-amounts {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+}
+
+.progress-target {
+    color: var(--text-secondary);
+}
+
+/* Target Table */
+.target-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.target-table th {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 2px solid var(--border);
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+.target-table .sub-header th {
+    font-size: 11px;
+    border-bottom: 1px solid var(--border);
+    font-weight: 500;
+    padding: 6px 12px;
+}
+
+.target-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.target-table tr:last-child td { border-bottom: none; }
+
+.target-table .cat-name {
+    font-weight: 600;
+}
+
+.target-table .num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.target-table .target-col {
+    color: var(--text-secondary);
+}
+
+.target-table .on-track { color: var(--green); font-weight: 600; }
+.target-table .warning { color: #D97706; font-weight: 600; }
+.target-table .behind { color: var(--red); font-weight: 600; }
+
+.target-table .total-row {
+    border-top: 2px solid var(--primary);
+    font-weight: 700;
+}
+
+.target-table .total-row td { padding-top: 14px; }
+
+/* Loading & Error */
+.loading-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(255,255,255,0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+.loading-spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--border);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.error-msg {
+    display: none;
+    background: var(--red);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    position: fixed;
+    top: 80px;
+    right: 32px;
+    z-index: 200;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: var(--shadow-hover);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .target-progress-grid { grid-template-columns: repeat(2, 1fr); }
+    .main { padding: 16px; }
+    .header { padding: 12px 16px; }
+    .target-table { font-size: 12px; }
+}
+
+@media (max-width: 640px) {
+    .kpi-grid { grid-template-columns: 1fr; }
+    .kpi-value { font-size: 24px; }
+    .header h1 { font-size: 14px; }
+    .filter-presets { gap: 6px; }
+    .filter-btn { padding: 6px 12px; font-size: 12px; }
+}

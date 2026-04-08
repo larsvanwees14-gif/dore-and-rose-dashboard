@@ -1,0 +1,99 @@
+app:
+  host: "0.0.0.0"
+  port: 5070
+
+google_sheets:
+  credentials_file: "~/.lars-dashboard/google_service_account.json"
+  spreadsheet_id: "1aMq12e2KbTLDmP1k1_eWgY5jgNtwQreWkfISDK31DYs"
+
+  # Overview tab cell mapping (repeating blocks per month)
+  overview_tab: "Overview"
+
+  # Month tabs in chronological order
+  month_tabs:
+    - "June"
+    - "July"
+    - "August"
+    - "September"
+    - "October"
+    - "November"
+    - "December"
+    - "January 26"
+    - "February 26"
+    - "March 26"
+    - "April 26"
+
+  # Cell references within each month tab
+  month_tab_mapping:
+    overview:
+      nett_revenue: "C2"
+      gross_margin_product: "C3"
+      gross_margin_product_pct: "D3"
+      nett_margin_product: "C4"
+      nett_margin_product_pct: "D4"
+      nett_margin_business: "C5"
+      nett_margin_business_pct: "D5"
+      acc_taxes: "C7"
+    gross_margins:
+      start_row: 12
+      columns:
+        ean: "A"
+        product_name: "B"
+        nett_rev: "C"
+        sales: "D"
+        price_inc_btw: "E"
+        price_ex_btw: "F"
+        direct_cost: "G"
+        gross_profit: "H"
+        gross_margin: "I"
+        conversion: "J"
+        returns: "K"
+        returns_pct: "L"
+        ad_spend: "M"
+        rev_from_ads: "N"
+        pct_paid: "O"
+        acos: "P"
+        tacos: "Q"
+    nett_margins:
+      start_row: 23
+      columns:
+        ean: "A"
+        product_name: "B"
+        gross_profit: "C"
+        ad_cost: "D"
+        return_costs: "E"
+        non_sellable_return_costs: "F"
+        storage_cost: "G"
+        recovery_clients: "H"
+        netto_profit: "I"
+        netto_margin: "J"
+    overhead:
+      start_row: 35
+      columns:
+        made_by: "A"
+        overhead_type: "B"
+        cost: "C"
+    totals:
+      total_overhead: "C49"
+      nett_margin_product: "C50"
+      nett_margin_product_pct: "D50"
+      nett_margin_total: "C51"
+      nett_margin_total_pct: "D51"
+
+targets:
+  year: 2026
+  btw_rate: 0.21
+  # Targets zijn inc BTW
+  categories:
+    Sleep Masks:
+      match_names: ["Sleepmask", "Aura Mask", "Cooling Deep Sleep Mask"]
+      quarterly: [55000, 90000, 75000, 110000]
+    Pillowcases:
+      match_names: ["Pillow Case"]
+      quarterly: [20000, 30000, 35000, 45000]
+    Pyjamas:
+      match_names: ["PJ SET", "PJ Dark Brown", "Long Sleeve TOP", "TENCEL PJ"]
+      quarterly: [5000, 5000, 10000, 20000]
+
+cache:
+  ttl_minutes: 5

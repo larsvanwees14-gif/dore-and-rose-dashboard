@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dore & Rose Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- Loading -->
+    <div id="loading" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Error -->
+    <div id="error-msg" class="error-msg"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <img src="/img/Logo Dore and Rose.jpg" alt="Dore & Rose" class="logo">
+            <h1>Dore & Rose</h1>
+        </div>
+        <div class="header-right">
+            <span id="kpi-month-label" class="month-label"></span>
+            <button id="refresh-btn" class="refresh-btn">Refresh</button>
+        </div>
+    </header>
+
+    <main class="main">
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+            <div class="kpi-card" id="kpi-revenue">
+                <div class="kpi-label-row">
+                    <span class="kpi-label">Omzet</span>
+                    <div class="btw-switch" id="btw-toggle">
+                        <span class="btw-option active" data-val="ex">Excl. VAT</span>
+                        <span class="btw-option" data-val="inc">Incl. VAT</span>
+                        <div class="btw-slider"></div>
+                    </div>
+                </div>
+                <div class="kpi-value">--</div>
+                <div class="kpi-change"></div>
+            </div>
+            <div class="kpi-card" id="kpi-gross-margin">
+                <div class="kpi-label">Gross Margin</div>
+                <div class="kpi-value">--</div>
+                <div class="kpi-change"></div>
+            </div>
+            <div class="kpi-card" id="kpi-nett-margin">
+                <div class="kpi-label">Nett Margin Business</div>
+                <div class="kpi-value">--</div>
+                <div class="kpi-change"></div>
+            </div>
+            <div class="kpi-card" id="kpi-profit">
+                <div class="kpi-label">Profit</div>
+                <div class="kpi-value">--</div>
+                <div class="kpi-change"></div>
+            </div>
+        </div>
+
+        <!-- Time Filter -->
+        <div class="filter-section">
+            <div class="filter-row">
+                <div class="filter-presets">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="ytd">YTD</button>
+                    <button class="filter-btn" data-filter="last-year">Last Year</button>
+                    <button class="filter-btn" data-filter="q1">Q1</button>
+                    <button class="filter-btn" data-filter="q2">Q2</button>
+                    <button class="filter-btn" data-filter="q3">Q3</button>
+                    <button class="filter-btn" data-filter="q4">Q4</button>
+                    <button class="filter-btn" data-filter="custom">Custom</button>
+                </div>
+                <div id="custom-range" class="custom-range" style="display: none;">
+                    <select id="range-from" class="range-select"></select>
+                    <span class="range-separator">t/m</span>
+                    <select id="range-to" class="range-select"></select>
+                    <button id="apply-range" class="apply-btn">Toepassen</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Revenue Chart -->
+        <div class="chart-card">
+            <h3>Monthly Revenue & Profit Bol</h3>
+            <div class="chart-container">
+                <canvas id="revenue-chart"></canvas>
+            </div>
+        </div>
+
+        <!-- Target Tracking -->
+        <div id="target-section" class="target-section" style="display: none;">
+            <h2 class="section-heading">Target Tracking 2026</h2>
+
+            <!-- Quarter Selector -->
+            <div class="target-filter">
+                <button class="target-q-btn" data-q="q1">Q1</button>
+                <button class="target-q-btn" data-q="q2">Q2</button>
+                <button class="target-q-btn" data-q="q3">Q3</button>
+                <button class="target-q-btn" data-q="q4">Q4</button>
+                <button class="target-q-btn" data-q="ytd">YTD</button>
+                <button class="target-q-btn active" data-q="total">Total</button>
+            </div>
+
+            <!-- Progress Bars -->
+            <div id="target-progress" class="target-progress-grid"></div>
+
+            <!-- Quarterly Chart -->
+            <div class="chart-card">
+                <h3>Quarterly Revenue vs Target (inc BTW)</h3>
+                <div class="chart-container">
+                    <canvas id="target-chart"></canvas>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/charts.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+</html>
