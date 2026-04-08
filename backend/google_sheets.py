@@ -42,14 +42,17 @@ class DoreAndRoseSheets:
         self.config = config["google_sheets"]
         self.cache_ttl = config.get("cache", {}).get("ttl_minutes", 5)
 
-        # Credentials: env var (Railway) or file (local dev)
+        # Credentials: must be provided via GOOGLE_CREDENTIALS_JSON env var
         creds_json = os.environ.get("GOOGLE_CREDENTIALS_JSON")
-        if creds_json:
-            info = json.loads(creds_json)
-            creds = service_account.Credentials.from_service_account_info(info, scopes=SCOPES)
-        else:
-            creds_file = os.path.expanduser(self.config["credentials_file"])
-            creds = service_account.Credentials.from_service_account_file(creds_file, scopes=SCOPES)
+        if not creds_json:
+            raise RuntimeError(
+                "Missing required environment variable GOOGLE_CREDENTIALS_JSON. "
+                "Set it to the full JSON content of your Google service account key file. "
+                "In Railway: go to your service → Variables and add GOOGLE_CREDENTIALS_JSON "
+                "with the contents of your service account JSON."
+            )
+        info = json.loads(creds_json)
+        creds = service_account.Credentials.from_service_account_info(info, scopes=SCOPES)
 
         self._service = build("sheets", "v4", credentials=creds)
         self._sheet_id = self.config["spreadsheet_id"]
