@@ -11,8 +11,6 @@ google_sheets:
 
   # Month tabs in chronological order
   month_tabs:
-    - "June"
-    - "July"
     - "August"
     - "September"
     - "October"

@@ -223,6 +223,10 @@ class DoreAndRoseSheets:
         if current_month and block:
             months.append(self._build_month(current_month, block, block_right))
 
+        # June/July belong to the prior period (2025) and are not part of the dashboard
+        excluded_months = {"June", "July"}
+        months = [m for m in months if m["month"].strip() not in excluded_months]
+
         months.sort(key=lambda m: (m["year"], m["month_num"]))
 
         available_tabs = [t for t in self.config.get("month_tabs", [])]
