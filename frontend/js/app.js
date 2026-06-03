@@ -85,6 +85,9 @@ function filterMonths(filter) {
         case "all":
             return allMonths;
 
+        case "last-month":
+            return allMonths.slice(-1);
+
         case "ytd":
             return allMonths.filter(m => m.year === currentYear && m.month_num <= currentMonth);
 
