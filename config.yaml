@@ -27,6 +27,7 @@ google_sheets:
     - "February 26"
     - "March 26"
     - "April 26"
+    - "May 26"
 
   # Cell references within each month tab
   month_tab_mapping:
