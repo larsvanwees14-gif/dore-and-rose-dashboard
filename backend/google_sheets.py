@@ -79,6 +79,12 @@ class DoreAndRoseSheets:
         ).execute()
         return result.get("values", [])
 
+    def _resolve_year(self, month_num):
+        """Map a bare month number to a calendar year using the configured fiscal year."""
+        start_month = self.config.get("fiscal_start_month", 1)
+        start_year = self.config.get("fiscal_start_year", datetime.now().year)
+        return start_year if month_num >= start_month else start_year + 1
+
     def get_dashboard_data(self, force_refresh=False):
         cache_key = "dashboard"
         if not force_refresh and not is_cache_stale(cache_key, self.cache_ttl):
@@ -134,8 +140,7 @@ class DoreAndRoseSheets:
             if len(parts) == 2 and parts[1].isdigit():
                 year = 2000 + int(parts[1]) if int(parts[1]) < 100 else int(parts[1])
             else:
-                today = datetime.now()
-                year = today.year if month_num <= today.month + 1 else today.year - 1
+                year = self._resolve_year(month_num)
 
             # Only process target year
             if year != target_year:
@@ -223,10 +228,6 @@ class DoreAndRoseSheets:
         if current_month and block:
             months.append(self._build_month(current_month, block, block_right))
 
-        # June/July belong to the prior period (2025) and are not part of the dashboard
-        excluded_months = {"June", "July"}
-        months = [m for m in months if m["month"].strip() not in excluded_months]
-
         months.sort(key=lambda m: (m["year"], m["month_num"]))
 
         available_tabs = [t for t in self.config.get("month_tabs", [])]
@@ -235,7 +236,6 @@ class DoreAndRoseSheets:
 
     def _build_month(self, month_name, block, block_right):
         month_num = MONTH_NAMES.get(month_name.lower(), 0)
-        today = datetime.now()
 
         # Handle tab names like "January 26" -> year 2026
         parts = month_name.split()
@@ -243,10 +243,8 @@ class DoreAndRoseSheets:
             short_year = int(parts[1])
             year = 2000 + short_year if short_year < 100 else short_year
             month_num = MONTH_NAMES.get(parts[0].lower(), 0)
-        elif month_num > today.month + 1:
-            year = today.year - 1
         else:
-            year = today.year
+            year = self._resolve_year(month_num)
 
         return {
             "month": month_name,

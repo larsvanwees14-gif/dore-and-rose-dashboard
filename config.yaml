@@ -9,8 +9,15 @@ google_sheets:
   # Overview tab cell mapping (repeating blocks per month)
   overview_tab: "Overview"
 
+  # Fiscal year mapping for bare month names (no year suffix):
+  # months >= fiscal_start_month belong to fiscal_start_year, earlier months roll to the next calendar year.
+  fiscal_start_month: 6
+  fiscal_start_year: 2025
+
   # Month tabs in chronological order
   month_tabs:
+    - "June"
+    - "July"
     - "August"
     - "September"
     - "October"

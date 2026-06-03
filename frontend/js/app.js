@@ -98,10 +98,10 @@ function filterMonths(filter) {
             return allMonths.filter(m => m.month_num >= 4 && m.month_num <= 6 && m.year === currentYear);
 
         case "q3":
-            return allMonths.filter(m => m.month_num >= 7 && m.month_num <= 9);
+            return allMonths.filter(m => m.month_num >= 7 && m.month_num <= 9 && m.year === currentYear);
 
         case "q4":
-            return allMonths.filter(m => m.month_num >= 10 && m.month_num <= 12);
+            return allMonths.filter(m => m.month_num >= 10 && m.month_num <= 12 && m.year === currentYear);
 
         case "custom": {
             const fromIdx = parseInt(document.getElementById("range-from").value);
