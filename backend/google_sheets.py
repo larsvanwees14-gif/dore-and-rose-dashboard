@@ -228,6 +228,21 @@ class DoreAndRoseSheets:
         if current_month and block:
             months.append(self._build_month(current_month, block, block_right))
 
+        # The Overview tab lists month blocks chronologically, and bare month
+        # names repeat across years (e.g. a "June" block for 2025 and one for
+        # 2026). Assign years by walking in order, anchored on the first block's
+        # fiscal year: a month number that does not advance means we have rolled
+        # into the next calendar year.
+        running_year = None
+        prev_num = None
+        for m in months:
+            if prev_num is None:
+                running_year = m["year"]
+            elif m["month_num"] <= prev_num:
+                running_year += 1
+            m["year"] = running_year
+            prev_num = m["month_num"]
+
         months.sort(key=lambda m: (m["year"], m["month_num"]))
 
         available_tabs = [t for t in self.config.get("month_tabs", [])]

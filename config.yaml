@@ -14,20 +14,22 @@ google_sheets:
   fiscal_start_month: 6
   fiscal_start_year: 2025
 
-  # Month tabs in chronological order
+  # Month tabs in chronological order (tab names carry a 2-digit year suffix)
   month_tabs:
-    - "June"
-    - "July"
-    - "August"
-    - "September"
-    - "October"
-    - "November"
-    - "December"
+    - "June 25"
+    - "July 25"
+    - "August 25"
+    - "September 25"
+    - "October 25"
+    - "November 25"
+    - "December 25"
     - "January 26"
     - "February 26"
     - "March 26"
     - "April 26"
     - "May 26"
+    - "June 26"
+    - "July 26"
 
   # Cell references within each month tab
   month_tab_mapping:
