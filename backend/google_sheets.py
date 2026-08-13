@@ -85,6 +85,49 @@ class DoreAndRoseSheets:
         start_year = self.config.get("fiscal_start_year", datetime.now().year)
         return start_year if month_num >= start_month else start_year + 1
 
+    def _discover_month_tabs(self):
+        """Read every tab title from the spreadsheet and keep the month tabs.
+
+        Matches titles like "June 25" or "January 26" (month name + 2-digit
+        year) and returns them sorted chronologically. Falls back to the
+        configured month_tabs list if the metadata call fails or finds none.
+        """
+        try:
+            meta = self._service.spreadsheets().get(
+                spreadsheetId=self._sheet_id, fields="sheets.properties.title"
+            ).execute()
+        except Exception:
+            return list(self.config.get("month_tabs", []))
+
+        found = []
+        for sheet in meta.get("sheets", []):
+            title = sheet.get("properties", {}).get("title", "").strip()
+            parts = title.split()
+            if len(parts) != 2 or not parts[1].isdigit():
+                continue
+            month_num = MONTH_NAMES.get(parts[0].lower(), 0)
+            if not month_num:
+                continue
+            year = 2000 + int(parts[1]) if int(parts[1]) < 100 else int(parts[1])
+            found.append((year, month_num, title))
+
+        if not found:
+            return list(self.config.get("month_tabs", []))
+        found.sort()
+        return [title for _, _, title in found]
+
+    def get_month_tabs(self, force_refresh=False):
+        """Return the chronological list of month tabs, discovered and cached."""
+        cache_key = "month_tabs"
+        if not force_refresh and not is_cache_stale(cache_key, self.cache_ttl):
+            cached = load_cache(cache_key)
+            if cached:
+                return cached["data"]
+
+        tabs = self._discover_month_tabs()
+        save_cache(cache_key, tabs)
+        return tabs
+
     def get_dashboard_data(self, force_refresh=False):
         cache_key = "dashboard"
         if not force_refresh and not is_cache_stale(cache_key, self.cache_ttl):
@@ -92,7 +135,7 @@ class DoreAndRoseSheets:
             if cached:
                 return cached["data"]
 
-        data = self._fetch_overview()
+        data = self._fetch_overview(force_refresh=force_refresh)
         save_cache(cache_key, data)
         return data
 
@@ -129,7 +172,7 @@ class DoreAndRoseSheets:
         for cat_name in categories:
             result[cat_name] = {}
 
-        tabs = self.config.get("month_tabs", [])
+        tabs = self.get_month_tabs(force_refresh=force_refresh)
         for tab in tabs:
             # Determine year/month for this tab
             parts = tab.split()
@@ -172,7 +215,7 @@ class DoreAndRoseSheets:
         save_cache(cache_key, result)
         return result
 
-    def _fetch_overview(self):
+    def _fetch_overview(self, force_refresh=False):
         rows = self._read_range(f"'Overview'!A1:J200")
         months = []
         current_month = None
@@ -245,7 +288,7 @@ class DoreAndRoseSheets:
 
         months.sort(key=lambda m: (m["year"], m["month_num"]))
 
-        available_tabs = [t for t in self.config.get("month_tabs", [])]
+        available_tabs = self.get_month_tabs(force_refresh=force_refresh)
 
         return {"months": months, "available_tabs": available_tabs}
 

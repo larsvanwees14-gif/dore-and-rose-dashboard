@@ -14,7 +14,8 @@ google_sheets:
   fiscal_start_month: 6
   fiscal_start_year: 2025
 
-  # Month tabs in chronological order (tab names carry a 2-digit year suffix)
+  # Month tabs are auto-discovered from the spreadsheet (any "<Month> YY" tab).
+  # This list is only a fallback used if that metadata lookup fails.
   month_tabs:
     - "June 25"
     - "July 25"
